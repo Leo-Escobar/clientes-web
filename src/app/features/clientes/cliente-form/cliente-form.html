@@ -1,0 +1,72 @@
+<section class="cliente-form-page">
+  <header class="cliente-form-page__header">
+    <div>
+      <p class="cliente-form-page__eyebrow">Mantenimiento</p>
+      <h2>{{ isEditMode ? 'Editar cliente' : 'Nuevo cliente' }}</h2>
+      <p class="cliente-form-page__copy">
+        {{ isEditMode ? 'Actualiza la informacion principal del cliente.' : 'Captura los datos base para registrar un cliente nuevo.' }}
+      </p>
+    </div>
+
+    <a routerLink="/clientes" class="cliente-form-page__back">Volver al listado</a>
+  </header>
+
+  <section class="cliente-form-card">
+    @if (errorMessage()) {
+      <p class="cliente-form-card__feedback cliente-form-card__feedback--error">
+        {{ errorMessage() }}
+      </p>
+    }
+
+    @if (isLoading()) {
+      <div class="cliente-form-card__state">
+        <p>Cargando cliente...</p>
+      </div>
+    }
+
+    <form class="cliente-form" novalidate [formGroup]="clienteForm" (ngSubmit)="submit()">
+      <label class="cliente-form__field">
+        <span>Nombre</span>
+        <input type="text" placeholder="Nombre completo" formControlName="nombre" />
+        @if (hasError('nombre')) {
+          <small class="cliente-form__hint">El nombre es obligatorio.</small>
+        }
+      </label>
+
+      <label class="cliente-form__field">
+        <span>Correo electronico</span>
+        <input type="email" placeholder="correo@ejemplo.com" formControlName="correoElectronico" />
+        @if (hasError('correoElectronico')) {
+          <small class="cliente-form__hint">Captura un correo valido.</small>
+        }
+      </label>
+
+      <label class="cliente-form__field">
+        <span>Telefono</span>
+        <input type="text" placeholder="555-000-0000" formControlName="telefono" />
+        @if (hasError('telefono')) {
+          <small class="cliente-form__hint">El telefono es obligatorio.</small>
+        }
+      </label>
+
+      <label class="cliente-form__field cliente-form__field--inline">
+        <span>Estatus</span>
+        <select formControlName="estatus">
+          <option [ngValue]="true">Activo</option>
+          <option [ngValue]="false">Inactivo</option>
+        </select>
+      </label>
+
+      <div class="cliente-form__actions">
+        <a routerLink="/clientes" class="cliente-form__secondary">Cancelar</a>
+        <button
+          type="submit"
+          class="cliente-form__primary"
+          [disabled]="isSaving() || isLoading()"
+        >
+          {{ isSaving() ? 'Guardando...' : isEditMode ? 'Guardar cambios' : 'Crear cliente' }}
+        </button>
+      </div>
+    </form>
+  </section>
+</section>

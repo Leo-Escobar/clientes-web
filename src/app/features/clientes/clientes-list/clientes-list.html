@@ -1,0 +1,106 @@
+<section class="clientes-page">
+  <header class="clientes-page__header">
+    <div>
+      <p class="clientes-page__eyebrow">Catalogo</p>
+      <h2>Clientes</h2>
+      <p class="clientes-page__copy">Consulta y administra los clientes registrados.</p>
+    </div>
+
+    <a routerLink="/clientes/nuevo" class="clientes-page__action">Nuevo cliente</a>
+  </header>
+
+  <section class="clientes-page__stats">
+    <article class="stat-card">
+      <span>Total</span>
+      <strong>{{ totalClientes() }}</strong>
+    </article>
+
+    <article class="stat-card">
+      <span>Activos</span>
+      <strong>{{ totalActivos() }}</strong>
+    </article>
+
+    <article class="stat-card">
+      <span>Inactivos</span>
+      <strong>{{ totalInactivos() }}</strong>
+    </article>
+  </section>
+
+  <section class="clientes-table-card">
+    <div class="clientes-table-card__toolbar">
+      <input
+        type="text"
+        placeholder="Buscar cliente"
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="applyFilter()"
+      />
+
+      <div class="clientes-table-card__toolbar-actions">
+        <button type="button" (click)="applyFilter()">Filtrar</button>
+        <button type="button" (click)="loadClientes()" [disabled]="isLoading()">Recargar</button>
+      </div>
+    </div>
+
+    @if (successMessage()) {
+      <p class="clientes-table-card__feedback clientes-table-card__feedback--success">
+        {{ successMessage() }}
+      </p>
+    }
+
+    @if (errorMessage()) {
+      <p class="clientes-table-card__feedback clientes-table-card__feedback--error">
+        {{ errorMessage() }}
+      </p>
+    }
+
+    @if (isLoading()) {
+      <div class="clientes-table-card__state">
+        <p>Cargando clientes...</p>
+      </div>
+    } @else if (filteredClientes().length === 0) {
+      <div class="clientes-table-card__state">
+        <p>No se encontraron clientes con ese criterio.</p>
+      </div>
+    } @else {
+      <div class="clientes-table-wrap">
+        <table class="clientes-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Correo</th>
+              <th>Telefono</th>
+              <th>Estatus</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (cliente of filteredClientes(); track cliente.id) {
+              <tr>
+                <td>#{{ cliente.id }}</td>
+                <td>{{ cliente.nombre }}</td>
+                <td>{{ cliente.correoElectronico }}</td>
+                <td>{{ cliente.telefono }}</td>
+                <td>
+                  <span class="status-pill" [class.is-active]="cliente.estatus">
+                    {{ cliente.estatus ? 'Activo' : 'Inactivo' }}
+                  </span>
+                </td>
+                <td class="clientes-table__actions">
+                  <a [routerLink]="['/clientes', cliente.id, 'editar']">Editar</a>
+                  <button
+                    type="button"
+                    (click)="deleteCliente(cliente)"
+                    [disabled]="deletingId() === cliente.id"
+                  >
+                    {{ deletingId() === cliente.id ? 'Eliminando...' : 'Eliminar' }}
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </section>
+</section>

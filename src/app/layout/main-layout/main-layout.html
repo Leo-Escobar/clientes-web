@@ -1,0 +1,20 @@
+<section class="main-layout">
+  <header class="main-layout__header">
+    <div class="main-layout__brand">
+      <p class="main-layout__eyebrow">Panel</p>
+      <h1>Clientes Web</h1>
+    </div>
+
+    <nav class="main-layout__nav">
+      <a routerLink="/clientes" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }">
+        Clientes
+      </a>
+      <a routerLink="/clientes/nuevo" routerLinkActive="is-active">Nuevo cliente</a>
+      <a routerLink="/login" (click)="logout()">Salir</a>
+    </nav>
+  </header>
+
+  <main class="main-layout__content">
+    <router-outlet></router-outlet>
+  </main>
+</section>

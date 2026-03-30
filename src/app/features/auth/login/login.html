@@ -1,0 +1,59 @@
+<section class="login-shell">
+  <div class="login-shell__backdrop"></div>
+
+  <article class="login-card">
+    <section class="login-card__intro">
+      <div class="login-card__content">
+        <p class="login-card__eyebrow">Clientes Web</p>
+        <h1>Bienvenido</h1>
+        <p class="login-card__copy">
+          Inicia sesion para administrar el catalogo de clientes de una forma simple y ordenada.
+        </p>
+      </div>
+    </section>
+
+    <section class="login-card__form-section">
+      <form class="login-form" novalidate [formGroup]="loginForm" (ngSubmit)="submit()">
+        <label class="login-form__field">
+          <span>Usuario</span>
+          <input
+            type="text"
+            name="nombreUsuario"
+            placeholder="Ingresa tu usuario"
+            autocomplete="username"
+            formControlName="nombreUsuario"
+          />
+          @if (hasError('nombreUsuario')) {
+            <small class="login-form__hint">Ingresa tu usuario para continuar.</small>
+          }
+        </label>
+
+        <label class="login-form__field">
+          <span>Contrasena</span>
+          <input
+            type="password"
+            name="contrasena"
+            placeholder="Ingresa tu contrasena"
+            autocomplete="current-password"
+            formControlName="contrasena"
+          />
+          @if (hasError('contrasena')) {
+            <small class="login-form__hint">Ingresa tu contrasena para continuar.</small>
+          }
+        </label>
+
+        <button type="submit" class="login-form__submit" [disabled]="isSubmitting()">
+          {{ isSubmitting() ? 'Entrando...' : 'Entrar al sistema' }}
+        </button>
+
+        @if (errorMessage()) {
+          <p class="login-form__feedback login-form__feedback--error">{{ errorMessage() }}</p>
+        }
+      </form>
+
+      <p class="login-card__footer">
+        Ingresa tus datos para acceder al sistema.
+      </p>
+    </section>
+  </article>
+</section>
